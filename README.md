@@ -100,11 +100,11 @@ The seed also creates 3 categories (Meeting Rooms, Vehicles, Equipment), 5 resou
 
 ### A quick tour
 
-1. Switch to **Kamala**, open **Resources**, choose **Board Room A**, and look at tomorrow's calendar.
-2. Click **Book this resource** and pick 10:30 to 11:30 tomorrow. The preview turns red; submitting shows who already holds the slot (HTTP 409).
-3. Pick the time directly after an existing booking ends. Back-to-back bookings are allowed.
-4. Cancel your reservation, then book the same slot again. Cancelling frees the slot.
-5. Switch to **Nimal** and notice there is no cancel button on Kamala's reservation. Switch to **Sunil** (admin) to add resources and categories.
+1. Switch to **Kamala**, open **Resources**, choose **Board Room A**, click **Availability** and then **Next day →** to see tomorrow. Tomorrow has two bookings, 10:00 to 11:00 and 11:00 to 12:00.
+2. Click **Book this resource** (the date is carried over), set the time to 10:30 to 11:30 and book. The calendar preview turns red and the request is rejected with a message saying who holds the slot (HTTP 409).
+3. Change the time to 12:00 to 13:00, which starts exactly when the last booking ends. Back-to-back bookings are allowed, so this succeeds.
+4. Cancel that reservation from the Reservations page, then book 12:00 to 13:00 again. Cancelling frees the slot.
+5. Switch to **Nimal** and notice there is no cancel button on Kamala's reservations. Switch to **Sunil** (admin) to add resources and categories.
 
 ## Tests
 

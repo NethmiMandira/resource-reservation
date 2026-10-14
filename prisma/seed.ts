@@ -1,14 +1,15 @@
 import "dotenv/config";
 import { PrismaClient, Role, ReservationStatus } from "@prisma/client";
+import { addDays, todayColombo, toColomboIso } from "../src/lib/dates";
 
 const prisma = new PrismaClient();
 
-// Today + N days, at the given hour (local time)
+// Today + N days at the given time, in Sri Lanka time, so the demo data is
+// the same wherever the seed is run
 function at(daysFromNow: number, hour: number, minute = 0): Date {
-  const d = new Date();
-  d.setDate(d.getDate() + daysFromNow);
-  d.setHours(hour, minute, 0, 0);
-  return d;
+  const date = addDays(todayColombo(), daysFromNow);
+  const time = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+  return new Date(toColomboIso(date, time));
 }
 
 async function main() {
