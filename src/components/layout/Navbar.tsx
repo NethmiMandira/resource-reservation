@@ -11,7 +11,12 @@ export default async function Navbar() {
     { href: "/", label: "Dashboard" },
     { href: "/resources", label: "Resources" },
     { href: "/reservations", label: "Reservations" },
-    ...(current && isAdmin(current) ? [{ href: "/categories", label: "Categories" }] : []),
+   ...(current && isAdmin(current)
+  ? [
+      { href: "/categories", label: "Categories" },
+      { href: "/users", label: "Users" },
+    ]
+  : []),
   ];
 
   return (
