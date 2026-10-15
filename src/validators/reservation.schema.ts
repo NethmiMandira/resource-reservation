@@ -3,6 +3,7 @@ import { z } from "zod";
 export const createReservationSchema = z
   .object({
     resourceId: z.string().uuid(),
+    userId: z.string().uuid().optional(), // admins only: book on behalf of this user
     title: z.string().trim().min(1, "Title is required").max(120),
     startTime: z.coerce.date(),
     endTime: z.coerce.date(),

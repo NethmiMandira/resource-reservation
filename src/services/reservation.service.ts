@@ -21,8 +21,18 @@ function isOverlapError(err: unknown) {
 
 export async function createReservation(
   input: CreateReservationInput,
-  user: Pick<User, "id">,
+  actor: Pick<User, "id"> & Partial<Pick<User, "role">>,
 ) {
+  // Members can only book for themselves. Admins can book on behalf of anyone.
+  const ownerId = input.userId ?? actor.id;
+  if (ownerId !== actor.id) {
+    if (actor.role !== "ADMIN") {
+      throw new ForbiddenError("Only admins can book on behalf of someone else");
+    }
+    const owner = await prisma.user.findUnique({ where: { id: ownerId } });
+    if (!owner) throw new NotFoundError("User not found");
+  }
+
   const resource = await prisma.resource.findUnique({
     where: { id: input.resourceId },
   });
@@ -35,7 +45,7 @@ export async function createReservation(
     return await prisma.reservation.create({
       data: {
         resourceId: input.resourceId,
-        userId: user.id,
+        userId: ownerId,
         title: input.title,
         startTime: input.startTime,
         endTime: input.endTime,

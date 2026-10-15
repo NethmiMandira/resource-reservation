@@ -12,6 +12,7 @@ import AvailabilityCalendar, {
 import { todayColombo, toColomboIso } from "@/lib/dates";
 
 export type ResourceOption = { id: string; name: string; category: string };
+export type UserOption = { id: string; name: string };
 
 type ApiError = {
   error?: {
@@ -22,11 +23,16 @@ type ApiError = {
 
 export default function ReservationForm({
   resources,
+  users,
+  currentUserId,
   initialResourceId,
   initialDate,
   signedIn,
 }: {
   resources: ResourceOption[];
+  // Only passed for admins: lets them book on behalf of someone else
+  users?: UserOption[];
+  currentUserId?: string;
   initialResourceId?: string;
   initialDate?: string;
   signedIn: boolean;
@@ -37,6 +43,7 @@ export default function ReservationForm({
   const [resourceId, setResourceId] = useState(
     resources.some((r) => r.id === initialResourceId) ? (initialResourceId as string) : "",
   );
+  const [bookedFor, setBookedFor] = useState(currentUserId ?? "");
   const [date, setDate] = useState(initialDate ?? todayColombo());
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("10:00");
@@ -93,6 +100,7 @@ export default function ReservationForm({
       body: JSON.stringify({
         resourceId,
         title,
+        ...(users && bookedFor ? { userId: bookedFor } : {}),
         startTime: toColomboIso(date, startTime),
         endTime: toColomboIso(date, endTime),
       }),
@@ -151,6 +159,23 @@ export default function ReservationForm({
             </option>
           ))}
         </Select>
+
+        {users && (
+          <Select
+            label="Booked for"
+            name="userId"
+            value={bookedFor}
+            onChange={(e) => setBookedFor(e.target.value)}
+            error={fieldErrors.userId}
+          >
+            {users.map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.name}
+                {u.id === currentUserId ? " (you)" : ""}
+              </option>
+            ))}
+          </Select>
+        )}
 
         <Input
           label="Title"
