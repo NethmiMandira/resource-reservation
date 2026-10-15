@@ -18,12 +18,14 @@ export default async function EditResourcePage({
   const user = await getCurrentUser();
   if (!user || !isAdmin(user)) {
     return (
-      <div className="space-y-2">
-        <h1 className="text-2xl font-semibold">Edit resource</h1>
-        <p className="text-slate-500">
-          Only admins can edit resources. Use the &ldquo;Acting as&rdquo; menu to switch to an
-          admin.
-        </p>
+      <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center">
+        <div className="w-full max-w-md space-y-2">
+          <h1 className="text-2xl font-semibold text-left">Edit resource</h1>
+          <p className="text-slate-500">
+            Only admins can edit resources. Use the &ldquo;Acting as&rdquo; menu to switch to an
+            admin.
+          </p>
+        </div>
       </div>
     );
   }
@@ -39,19 +41,21 @@ export default async function EditResourcePage({
   const categories = await listCategories();
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Edit resource</h1>
-      <ResourceForm
-        categories={categories.map((c) => ({ id: c.id, name: c.name }))}
-        initial={{
-          id: resource.id,
-          categoryId: resource.categoryId,
-          name: resource.name,
-          location: resource.location,
-          capacity: resource.capacity,
-          isActive: resource.isActive,
-        }}
-      />
+    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center">
+      <div className="w-full max-w-md space-y-6">
+        <h1 className="text-2xl font-semibold text-left">Edit resource</h1>
+        <ResourceForm
+          categories={categories.map((c) => ({ id: c.id, name: c.name }))}
+          initial={{
+            id: resource.id,
+            categoryId: resource.categoryId,
+            name: resource.name,
+            location: resource.location,
+            capacity: resource.capacity,
+            isActive: resource.isActive,
+          }}
+        />
+      </div>
     </div>
   );
 }
