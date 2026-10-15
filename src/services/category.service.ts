@@ -4,7 +4,7 @@ import type { CreateCategoryInput } from "@/validators/category.schema";
 
 export function listCategories() {
   return prisma.resourceCategory.findMany({
-    orderBy: { name: "asc" },
+    orderBy: [{ createdAt: "asc" }, { name: "asc" }],
     include: { _count: { select: { resources: true } } },
   });
 }
