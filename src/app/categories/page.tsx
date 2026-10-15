@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Table, Td, Th } from "@/components/ui/Table";
 import CategoryForm from "@/components/categories/CategoryForm";
+import DeleteCategoryButton from "@/components/categories/DeleteCategoryButton";
 import { getCurrentUser } from "@/lib/current-user";
 import { isAdmin } from "@/lib/permissions";
 import { listCategories } from "@/services/category.service";
@@ -24,6 +25,11 @@ export default async function CategoriesPage() {
               <Th>Name</Th>
               <Th>Description</Th>
               <Th>Resources</Th>
+              {admin && (
+                <Th>
+                  <span className="sr-only">Actions</span>
+                </Th>
+              )}
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -39,6 +45,21 @@ export default async function CategoriesPage() {
                     {c._count.resources}
                   </Link>
                 </Td>
+                {admin && (
+                  <Td className="whitespace-nowrap text-right">
+                    <Link
+                      href={`/categories/${c.id}/edit`}
+                      className="rounded-md px-2 py-1 text-sm font-medium text-slate-700 hover:bg-slate-100"
+                    >
+                      Edit
+                    </Link>
+                    <DeleteCategoryButton
+                      id={c.id}
+                      name={c.name}
+                      resourceCount={c._count.resources}
+                    />
+                  </Td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -49,8 +70,8 @@ export default async function CategoriesPage() {
         <CategoryForm />
       ) : (
         <p className="text-sm text-slate-500">
-          Only admins can add categories. Use the &ldquo;Acting as&rdquo; menu to switch to an
-          admin.
+          Only admins can add, edit or delete categories. Use the &ldquo;Acting as&rdquo; menu to
+          switch to an admin.
         </p>
       )}
     </div>
