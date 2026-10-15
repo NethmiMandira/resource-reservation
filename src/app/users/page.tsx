@@ -1,6 +1,5 @@
 import Badge from "@/components/ui/Badge";
 import { Table, Td, Th } from "@/components/ui/Table";
-import UserForm from "@/components/users/UserForm";
 import { getCurrentUser } from "@/lib/current-user";
 import { isAdmin } from "@/lib/permissions";
 import { formatDateTime } from "@/lib/utils";
@@ -14,8 +13,7 @@ export default async function UsersPage() {
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold">Users</h1>
         <p className="text-slate-500">
-          Only admins can view and add users. Use the &ldquo;Acting as&rdquo; menu to switch to an
-          admin.
+          Only admins can view users. Use the &ldquo;Acting as&rdquo; menu to switch to an admin.
         </p>
       </div>
     );
@@ -50,8 +48,6 @@ export default async function UsersPage() {
           ))}
         </tbody>
       </Table>
-
-      <UserForm />
     </div>
   );
 }
