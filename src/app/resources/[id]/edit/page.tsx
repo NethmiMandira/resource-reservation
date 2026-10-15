@@ -18,7 +18,7 @@ export default async function EditResourcePage({
   const user = await getCurrentUser();
   if (!user || !isAdmin(user)) {
     return (
-      <div className="space-y-2">
+      <div className="mx-auto max-w-lg space-y-2">
         <h1 className="text-2xl font-semibold">Edit resource</h1>
         <p className="text-slate-500">
           Only admins can edit resources. Use the &ldquo;Acting as&rdquo; menu to switch to an
@@ -39,7 +39,7 @@ export default async function EditResourcePage({
   const categories = await listCategories();
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-lg space-y-6">
       <h1 className="text-2xl font-semibold">Edit resource</h1>
       <ResourceForm
         categories={categories.map((c) => ({ id: c.id, name: c.name }))}

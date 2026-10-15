@@ -17,7 +17,7 @@ export default async function EditCategoryPage({
   const user = await getCurrentUser();
   if (!user || !isAdmin(user)) {
     return (
-      <div className="space-y-2">
+      <div className="mx-auto max-w-lg space-y-2">
         <h1 className="text-2xl font-semibold">Edit category</h1>
         <p className="text-slate-500">
           Only admins can edit categories. Use the &ldquo;Acting as&rdquo; menu to switch to an
@@ -36,7 +36,7 @@ export default async function EditCategoryPage({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-lg space-y-6">
       <h1 className="text-2xl font-semibold">Edit category</h1>
       <CategoryForm
         initial={{

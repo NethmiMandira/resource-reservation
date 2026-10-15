@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "resources" ADD COLUMN     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP;

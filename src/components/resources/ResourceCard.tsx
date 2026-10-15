@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Badge from "@/components/ui/Badge";
+import DeleteResourceButton from "@/components/resources/DeleteResourceButton";
 
 export type ResourceCardData = {
   id: string;
@@ -8,6 +9,7 @@ export type ResourceCardData = {
   capacity: number;
   isActive: boolean;
   category: { name: string };
+  _count: { reservations: number };
 };
 
 const linkBase =
@@ -42,7 +44,7 @@ export default function ResourceCard({
         </dl>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {resource.isActive && (
           <Link
             href={`/reservations/new?resourceId=${resource.id}`}
@@ -58,12 +60,20 @@ export default function ResourceCard({
           Availability
         </Link>
         {admin && (
-          <Link
-            href={`/resources/${resource.id}/edit`}
-            className={`${linkBase} text-slate-700 hover:bg-slate-100`}
-          >
-            Edit
-          </Link>
+          <>
+            <Link
+              href={`/resources/${resource.id}/edit`}
+              className={`${linkBase} text-slate-700 hover:bg-slate-100`}
+            >
+              Edit
+            </Link>
+            <DeleteResourceButton
+              id={resource.id}
+              name={resource.name}
+              isActive={resource.isActive}
+              reservationCount={resource._count.reservations}
+            />
+          </>
         )}
       </div>
     </div>

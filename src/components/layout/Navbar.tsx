@@ -21,14 +21,27 @@ export default async function Navbar() {
   ];
 
   return (
-    <header className="border-b border-slate-200 bg-white">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-        <nav className="flex flex-wrap items-center gap-5">
-          <Link href="/" className="font-semibold text-slate-900">
-            Resource Reservation
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-3">
+        {/* Left Section: Brand & Nav Tabs */}
+        <div className="flex flex-wrap items-center gap-6">
+          <Link
+            href="/"
+            className="group flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 transition-colors hover:border-slate-300"
+          >
+            <span className="h-2 w-2 rounded-full bg-slate-900" aria-hidden="true" />
+            <span className="text-sm font-bold tracking-tight text-slate-900">
+              Resource Reservation
+            </span>
           </Link>
-          <NavLinks links={links} />
-        </nav>
+
+          {/* Navigation Links */}
+          <nav className="flex items-center gap-5">
+            <NavLinks links={links} />
+          </nav>
+        </div>
+
+        {/* Right Section: User Switcher */}
         <UserSwitcher
           currentId={current?.id ?? null}
           users={users.map((u) => ({ id: u.id, name: u.name, role: u.role }))}

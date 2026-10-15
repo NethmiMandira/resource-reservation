@@ -30,7 +30,7 @@ export default async function ResourcesPage({
   const [user, categories, resources] = await Promise.all([
     getCurrentUser(),
     listCategories(),
-    listResources(filters),
+    listResources(filters, "newest"),
   ]);
   const admin = user ? isAdmin(user) : false;
 

@@ -51,7 +51,7 @@ export default async function ReservationDetailPage({
   ];
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="mx-auto max-w-2xl space-y-6">
       <Link href="/reservations" className="text-sm text-slate-500 hover:underline">
         ← All reservations
       </Link>

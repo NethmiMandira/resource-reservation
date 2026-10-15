@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { NotFoundError } from "@/lib/errors";
 import type {
@@ -7,14 +8,19 @@ import type {
 
 type Filters = { categoryId?: string; active?: "true" | "false" };
 
-export function listResources(filters: Filters = {}) {
+export function listResources(filters: Filters = {}, order: "name" | "newest" = "name") {
+  const orderBy: Prisma.ResourceOrderByWithRelationInput[] =
+    order === "newest"
+      ? [{ createdAt: "desc" }, { name: "asc" }]
+      : [{ category: { name: "asc" } }, { name: "asc" }];
+
   return prisma.resource.findMany({
     where: {
       categoryId: filters.categoryId,
       isActive: filters.active === undefined ? undefined : filters.active === "true",
     },
-    include: { category: true },
-    orderBy: [{ category: { name: "asc" } }, { name: "asc" }],
+    include: { category: true, _count: { select: { reservations: true } } },
+    orderBy,
   });
 }
 
@@ -44,12 +50,18 @@ export async function updateResource(id: string, input: UpdateResourceInput) {
   });
 }
 
-// Resources that already have reservations are deactivated instead of deleted
+// Resources that already have reservations are marked unavailable instead of
+// deleted, so the booking history is never lost
 export async function deleteResource(id: string) {
   await getResourceById(id);
   const count = await prisma.reservation.count({ where: { resourceId: id } });
   if (count > 0) {
-    return prisma.resource.update({ where: { id }, data: { isActive: false } });
+    const resource = await prisma.resource.update({
+      where: { id },
+      data: { isActive: false },
+    });
+    return { deleted: false as const, resource };
   }
-  return prisma.resource.delete({ where: { id } });
+  const resource = await prisma.resource.delete({ where: { id } });
+  return { deleted: true as const, resource };
 }
